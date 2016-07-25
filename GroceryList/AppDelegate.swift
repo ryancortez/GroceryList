@@ -12,10 +12,18 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // Setup CoreData
+        let coreDataManager = CoreDataManager(xcDataModelFileName: "Model", storeType: .SQLite)
+        
+        // Pass the NSManagedObjectContext from CoreData to the first ViewController
+        let navigationController = self.window?.rootViewController as! UINavigationController
+        let groceryListTableViewController = navigationController.viewControllers.first as! GroceryListTableViewController
+        groceryListTableViewController.coreDataManager = coreDataManager
+        groceryListTableViewController.managedObjectContext = coreDataManager.managedObjectContext
+        
         return true
     }
 
