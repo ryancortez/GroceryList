@@ -22,6 +22,8 @@
 		943375821D4160CC0078D298 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 943375801D4160CC0078D298 /* Model.xcdatamodeld */; };
 		943375841D4168600078D298 /* GroceryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943375831D4168600078D298 /* GroceryList.swift */; };
 		943375861D4168680078D298 /* GroceryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943375851D4168680078D298 /* GroceryItem.swift */; };
+		943980CF1D47E6CF00DFD00F /* CounterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943980CE1D47E6CF00DFD00F /* CounterTableViewCell.swift */; };
+		943980D21D47E85E00DFD00F /* CounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943980D11D47E85E00DFD00F /* CounterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,8 @@
 		943375811D4160CC0078D298 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		943375831D4168600078D298 /* GroceryList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroceryList.swift; sourceTree = "<group>"; };
 		943375851D4168680078D298 /* GroceryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroceryItem.swift; sourceTree = "<group>"; };
+		943980CE1D47E6CF00DFD00F /* CounterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CounterTableViewCell.swift; sourceTree = "<group>"; };
+		943980D11D47E85E00DFD00F /* CounterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CounterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +108,7 @@
 		943375781D41216A0078D298 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				943980D01D47E71D00DFD00F /* CustomViews */,
 				9433757B1D4130950078D298 /* TableViewCell */,
 				943375581D411BB30078D298 /* AppDelegate.swift */,
 				943375761D4121650078D298 /* AddTableViewControllers */,
@@ -138,8 +143,17 @@
 			isa = PBXGroup;
 			children = (
 				9433757C1D4130D50078D298 /* TextFieldTableViewCell.swift */,
+				943980CE1D47E6CF00DFD00F /* CounterTableViewCell.swift */,
 			);
 			name = TableViewCell;
+			sourceTree = "<group>";
+		};
+		943980D01D47E71D00DFD00F /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				943980D11D47E85E00DFD00F /* CounterView.swift */,
+			);
+			name = CustomViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,6 +230,7 @@
 				9433756D1D4121120078D298 /* GroceryItemTableViewController.swift in Sources */,
 				943375751D41215B0078D298 /* AddToGroceryItemTableViewController.swift in Sources */,
 				943375711D4121420078D298 /* AddToListTableViewController.swift in Sources */,
+				943980D21D47E85E00DFD00F /* CounterView.swift in Sources */,
 				9433757D1D4130D50078D298 /* TextFieldTableViewCell.swift in Sources */,
 				943375731D4121510078D298 /* AddToGroceryListTableViewController.swift in Sources */,
 				9433756B1D4121050078D298 /* GroceryListTableViewController.swift in Sources */,
@@ -223,6 +238,7 @@
 				9433757F1D415EF00078D298 /* CoreDataManager.swift in Sources */,
 				943375821D4160CC0078D298 /* Model.xcdatamodeld in Sources */,
 				9433756F1D4121270078D298 /* ListTableViewController.swift in Sources */,
+				943980CF1D47E6CF00DFD00F /* CounterTableViewCell.swift in Sources */,
 				943375861D4168680078D298 /* GroceryItem.swift in Sources */,
 				943375591D411BB30078D298 /* AppDelegate.swift in Sources */,
 			);

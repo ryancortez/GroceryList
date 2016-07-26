@@ -45,38 +45,29 @@ class ListTableViewController: UITableViewController, NSFetchedResultsController
         
     }
     
-    func insertNewList(title: String, items: Array<NSManagedObject>?) {
-        let groceryList = NSEntityDescription.insertNewObjectForEntityForName("GroceryList", inManagedObjectContext: self.managedObjectContext)
-        groceryList.setValue(title, forKey: "title")
-        
-        let itemsFromList = groceryList.mutableSetValueForKey("groceryItems")
-        
+    // MARK: - Editing Database
+    
+    func insertNewList(title: String, items: Array<NSManagedObject>?) -> NSManagedObject {
+        let list = NSEntityDescription.insertNewObjectForEntityForName("GroceryList", inManagedObjectContext: self.managedObjectContext)
+        list.setValue(title, forKey: "title")
         if let array = items {
+            let itemsFromList = list.mutableSetValueForKey("groceryItems")
             itemsFromList.addObjectsFromArray(array)
         }
-        
-        
+        save()
+        return list
+    }
+    
+    func save() {
         do {
             try self.managedObjectContext.save()
         } catch {
             print("Unable to save new list")
             return
         }
-        
     }
     
-    func insertNewListItem(title: String, image: NSData?, price: Float?, groceryListTitle: String) {
-        let groceryItem = NSEntityDescription.insertNewObjectForEntityForName("GroceryItem", inManagedObjectContext: self.managedObjectContext)
-        groceryItem.setValue(title, forKey: "title")
-        groceryItem.setValue(price, forKey: "price")
-        
-        do {
-            try self.managedObjectContext.save()
-        } catch {
-            print("Unable to save new list item entry")
-            return
-        }
-    }
+    // MARK: - TableView Delegate
 
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
@@ -97,7 +88,7 @@ class ListTableViewController: UITableViewController, NSFetchedResultsController
         }
     }
     
-    // MARK: - Table view data source
+    // MARK: - TableView Data Source
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return managedObjects.count
@@ -111,6 +102,16 @@ class ListTableViewController: UITableViewController, NSFetchedResultsController
     
     @IBAction func reorderButtonPressed(sender: AnyObject) {
         
+    }
+    
+    // MARK: - Segue 
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        guard let destinationViewController = segue.destinationViewController as? AddToListTableViewController else {
+            print("AddToListTableViewController was not the destinationViewController")
+            return
+        }
+        destinationViewController.managedObjectContext = self.managedObjectContext
     }
 
 }

@@ -11,40 +11,54 @@ import CoreData
 
 protocol AddListTableViewControllerDelegate {
     var managedObjectContext: NSManagedObjectContext! { get set }
-    func insertNewList(title: String, items: Array<NSManagedObject>?)
+    func insertNewList(title: String, items: Array<NSManagedObject>?) -> NSManagedObject
 }
 
 class AddToGroceryListTableViewController: AddToListTableViewController, UITextFieldDelegate {
 
     var delegate: AddListTableViewControllerDelegate!
     
+    // MARK: - TableView Data Source
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (section == 0) {
+            return 1
+        } else if (section == 1) {
+            return 1
+        } else {
+            return 0
+        }
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("addGroceryListCell", forIndexPath: indexPath) as! TextFieldTableViewCell
+        
+        if (indexPath.section == 0) {
+            cell.textField.placeholder = "Add grocery list name"
+            
+        } else if (indexPath.section == 1) {
+            cell.textField.placeholder = "Add grocery item"
+        }
+        
+        return cell
+    }
+    
+    // MARK: - Actions
+    
     @IBAction func saveButtonPressed(sender: AnyObject) {
         
-        // Get the string from the first cell displayed at the top
-        let titleIndexPath = NSIndexPath(forRow: 0, inSection: 0)
-        let listTitleCell = self.tableView.cellForRowAtIndexPath(titleIndexPath) as! TextFieldTableViewCell
-        guard let listItemTitle = listTitleCell.textField.text  else {
-            print("No String found in titleCell.textField.text ")
-            return
-        }
-        
-        var items:Array<NSManagedObject> = []
-        let section = 1
-        let numberOfItemRows = self.tableView.numberOfRowsInSection(section)
-        
-        for rowNumber in 0...numberOfItemRows - 1 {
-            
-            let itemIndexPath = NSIndexPath(forRow: rowNumber, inSection: section)
-            let itemCell = self.tableView.cellForRowAtIndexPath(itemIndexPath) as! TextFieldTableViewCell
-            let item = NSEntityDescription.insertNewObjectForEntityForName("GroceryItem", inManagedObjectContext: delegate.managedObjectContext)
-            item.setValue(itemCell.textField.text, forKey: "title")
-            items.append(item)
-        }
-        
-        if (listItemTitle != "") {
-            delegate.insertNewList(listItemTitle, items: items)
+        let title = getTitleFromTextFieldTableViewCell(forRow: 0, inSection: 0)
+        let items = getListItemsFromTextFieldTableViewCells(inSection: 1)
+    
+        if (title != "") {
+            delegate.insertNewList(title, items: items)
         }
         
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-}
+    
+   }

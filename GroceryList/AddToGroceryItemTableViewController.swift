@@ -9,26 +9,75 @@
 import UIKit
 import CoreData
 
-protocol AddListItemTableViewControllerDelegate {
-    var list: NSManagedObject! { get set }
-    func insertNewListItem(title: String, image: NSData?, price: Float?, groceryListTitle: String)
+protocol AddToGroceryItemTableViewControllerDelegate {
+    func reloadTable(withItems items: NSSet)
+    func passList(list: NSManagedObject, andItems items: Array<NSManagedObject>)
 }
 
 class AddToGroceryItemTableViewController: AddToListTableViewController {
+    
+    var list: NSManagedObject!
+    var items: Array<NSManagedObject>!
+    var delegate: AddListTableViewControllerDelegate!
+    var itemTableViewControllerDelegate: AddToGroceryItemTableViewControllerDelegate!
+    
+    override func viewWillAppear(animated: Bool) {
+        let items = list.valueForKey("groceryItems") as! NSSet
+        self.items = items.allObjects as? Array<NSManagedObject>
+    }
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (section == 0) {
+            return 1
+        } else if (section == 1) {
+            return items.count + 1
+        } else {
+            return 0
+        }
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("addGroceryItemCell", forIndexPath: indexPath) as! TextFieldTableViewCell
+        let key = "title"
+        if (indexPath.section == 0) {
+            cell.textField.placeholder = "Add grocery list name"
+            guard let string = list.valueForKey(key) as? String else {
+                print("list(\(key)) didn't not return a string ")
+                return cell
+            }
+            cell.textField.text = string
+        } else if (indexPath.section == 1) {
+            cell.textField.placeholder = "Add grocery item"
+            if (items.count > indexPath.row) {
+                let item = items[indexPath.row]
+                guard let string = item.valueForKey(key) as? String else {
+                    print("item(\(indexPath.row)) didn't not return a String ")
+                    return cell
+                }
+                cell.textField.text = string
+            }
+        }
+        return cell
+    }
 
-    var delegate: AddListItemTableViewControllerDelegate!
+    
+    // MARK: - Actions
     
     @IBAction func saveButtonPressed(sender: AnyObject) {
-        let titleIndexPath = NSIndexPath(forRow: 0, inSection: 0)
-        let priceIndexPath = NSIndexPath(forRow: 0, inSection: 1)
-        
-        let titleCell = self.tableView(self.tableView, cellForRowAtIndexPath: titleIndexPath) as! TextFieldTableViewCell
-        let priceCell = self.tableView(self.tableView, cellForRowAtIndexPath: priceIndexPath) as! TextFieldTableViewCell
-        
-        let listItemTitle = titleCell.textField.text
-        let price = priceCell.textField.text?.floatValue
-        
-        let groceryListTitle = delegate.list.valueForKey("title") as! String
-        delegate.insertNewListItem(listItemTitle!, image: nil, price: price, groceryListTitle: groceryListTitle)
+        let title = getTitleFromTextFieldTableViewCell(forRow: 0, inSection: 0)
+        let items = getListItemsFromTextFieldTableViewCells(inSection: 1)
+
+        list.setValue(title, forKey: "title")
+        let set = list.mutableSetValueForKey("groceryItems")
+        set.removeAllObjects()
+        set.addObjectsFromArray(items)
+        self.items = items
+        itemTableViewControllerDelegate.reloadTable(withItems: set)
+        save()
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 extension String {
     var floatValue: Float {
@@ -15,36 +16,48 @@ extension String {
 }
 
 class AddToListTableViewController: UITableViewController {
-
-    // MARK: - Table view data source
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (section == 0) {
-            return 1
-        } else if (section == 1) {
-            return 1
-        } else {
-            return 0
+    
+    var managedObjectContext: NSManagedObjectContext!
+    
+    func save() {
+        do {
+            try self.managedObjectContext.save()
+        } catch {
+            print("Unable to save new list")
+            return
         }
     }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("addGroceryListCell", forIndexPath: indexPath) as! TextFieldTableViewCell
-        
-        if (indexPath.section == 0) {
-            cell.textField.placeholder = "Add grocery list name"
-            
-        } else if (indexPath.section == 1) {
-            cell.textField.placeholder = "Add grocery item"
+    
+    func getTitleFromTextFieldTableViewCell(forRow row: Int, inSection section: Int) -> String {
+        let indexPath = NSIndexPath(forRow: row, inSection: section)
+        let cell = self.tableView.cellForRowAtIndexPath(indexPath) as! TextFieldTableViewCell
+        guard let title = cell.textField.text  else {
+            print("No String found in titleCell.textField.text")
+            return ""
         }
-
-        return cell
+        return title
+    }
+    
+    func getListItemsFromTextFieldTableViewCells(inSection section: Int) -> Array<NSManagedObject> {
+        var items:Array<NSManagedObject> = []
+        let numberOfItemRows = self.tableView.numberOfRowsInSection(section)
+        if (numberOfItemRows >= 1) {
+            for rowNumber in 0...numberOfItemRows - 1 {
+            let itemIndexPath = NSIndexPath(forRow: rowNumber, inSection: section)
+            let itemCell = self.tableView.cellForRowAtIndexPath(itemIndexPath) as! TextFieldTableViewCell
+                let item = NSEntityDescription.insertNewObjectForEntityForName("GroceryItem", inManagedObjectContext: managedObjectContext)
+                if (itemCell.textField.text != "") {
+                    item.setValue(itemCell.textField.text, forKey: "title")
+                    items.append(item)
+                }
+            }
+        }
+        return items
     }
 
+
+    // MARK: - Table view Data Source
+ 
     @IBAction func cancelButtonPressed(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }

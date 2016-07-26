@@ -11,11 +11,19 @@ import CoreData
 
 class GroceryListTableViewController: ListTableViewController {
     
+    // MARK: - Initial Setup
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initFetchResultsController()
     }
-
+    
+    override func viewWillAppear(animated: Bool) {
+        self.tableView.reloadData()
+    }
+        
+    // MARK: - TableView Data Source
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sections = self.fetchResultsController.sections else {
             fatalError("No sections were found in the fetchResultsController")
@@ -23,11 +31,24 @@ class GroceryListTableViewController: ListTableViewController {
         return sections[section].numberOfObjects
     }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("groceryListCell", forIndexPath: indexPath)
-        let listItem = self.fetchResultsController.objectAtIndexPath(indexPath)
-        cell.textLabel?.text = listItem.valueForKey("title") as? String
+        guard let cell = tableView.dequeueReusableCellWithIdentifier("groceryListCell", forIndexPath: indexPath) as? CounterTableViewCell else {
+            print("Did not recieve CounterTableViewCell")
+            let blankCell = tableView.dequeueReusableCellWithIdentifier("groceryListCell", forIndexPath: indexPath)
+            return blankCell
+        }
+        guard let list = self.fetchResultsController.objectAtIndexPath(indexPath) as? NSManagedObject else {
+            print("Did not find NSManagedObject")
+            let blankCell = tableView.dequeueReusableCellWithIdentifier("groceryListCell", forIndexPath: indexPath)
+            return blankCell
+        }
+        cell.label.text = list.valueForKey("title") as? String
+        
+        let listItems = list.mutableSetValueForKey("groceryItems")
+        cell.counterView.counter = listItems.allObjects.count
         return cell
     }
+    
+    // MARK: - TableView Delegate
 
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         switch editingStyle {
@@ -57,6 +78,8 @@ class GroceryListTableViewController: ListTableViewController {
         }
     }
     
+    // MARK: Segues
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if (segue.identifier == "addList") {
@@ -69,6 +92,7 @@ class GroceryListTableViewController: ListTableViewController {
                 return
             }
             destinationViewController.delegate = self
+            destinationViewController.managedObjectContext = self.managedObjectContext
         }
         
         if (segue.identifier == "listToListItem") {

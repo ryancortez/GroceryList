@@ -16,10 +16,10 @@
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="addGroceryListCell" id="iAo-mm-dRb" customClass="TextFieldTableViewCell" customModule="GroceryList" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="114" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iAo-mm-dRb" id="16o-Pw-4dt">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KoD-z3-H6k">
@@ -78,7 +78,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Placeholder Text" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PVA-J5-Cy0">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="PVA-J5-Cy0">
                                             <rect key="frame" x="8" y="0.0" width="584" height="44"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <textInputTraits key="textInputTraits"/>
@@ -91,6 +91,9 @@
                                         <constraint firstItem="PVA-J5-Cy0" firstAttribute="top" secondItem="IJA-7e-7wN" secondAttribute="top" id="wC4-OR-8Wf"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="textField" destination="PVA-J5-Cy0" id="cJ8-sj-NkZ"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -147,7 +150,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="L3h-4E-hz0"/>
                         <barButtonItem systemItem="edit" id="agC-ue-Ckk">
                             <connections>
-                                <segue destination="Ett-fk-g4o" kind="presentation" id="e8g-SS-k41"/>
+                                <segue destination="Ett-fk-g4o" kind="presentation" identifier="itemTableToAddItemTable" id="e8g-SS-k41"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
@@ -162,19 +165,55 @@
         <scene sceneID="hEO-rr-Nmx">
             <objects>
                 <tableViewController id="Edm-Nx-9XV" customClass="GroceryListTableViewController" customModule="GroceryList" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="yYd-yg-lqe">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="73" sectionHeaderHeight="28" sectionFooterHeight="28" id="yYd-yg-lqe">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="groceryListCell" id="KrC-mm-DGL">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="groceryListCell" rowHeight="70" id="KrC-mm-DGL" customClass="CounterTableViewCell" customModule="GroceryList" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="600" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KrC-mm-DGL" id="yXd-0h-OLQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="567" height="69.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSv-h4-DzZ">
+                                            <rect key="frame" x="16" y="24.5" width="42" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K3Q-6E-ida" customClass="CounterView" customModule="GroceryList" customModuleProvider="target">
+                                            <rect key="frame" x="505" y="4" width="62" height="62"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="62" id="7CH-tu-L0o"/>
+                                                <constraint firstAttribute="height" constant="62" id="GLn-To-49z"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="K3Q-6E-ida" firstAttribute="centerY" secondItem="yXd-0h-OLQ" secondAttribute="centerY" id="0kw-1T-kGZ"/>
+                                        <constraint firstItem="CSv-h4-DzZ" firstAttribute="centerY" secondItem="yXd-0h-OLQ" secondAttribute="centerY" id="2mg-8V-uE6"/>
+                                        <constraint firstItem="K3Q-6E-ida" firstAttribute="top" secondItem="yXd-0h-OLQ" secondAttribute="top" id="57b-WC-uwW"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="K3Q-6E-ida" secondAttribute="bottom" id="AY1-uV-sb0"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="K3Q-6E-ida" secondAttribute="trailing" constant="-8" id="OEO-qe-VdN"/>
+                                        <constraint firstItem="CSv-h4-DzZ" firstAttribute="leading" secondItem="yXd-0h-OLQ" secondAttribute="leadingMargin" constant="8" id="P4F-6l-IaY"/>
+                                        <constraint firstItem="CSv-h4-DzZ" firstAttribute="top" secondItem="K3Q-6E-ida" secondAttribute="top" id="VHk-Qr-QNa"/>
+                                        <constraint firstItem="CSv-h4-DzZ" firstAttribute="bottom" secondItem="K3Q-6E-ida" secondAttribute="bottom" id="myH-ww-p6B"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="VHk-Qr-QNa"/>
+                                            <exclude reference="myH-ww-p6B"/>
+                                            <exclude reference="57b-WC-uwW"/>
+                                            <exclude reference="AY1-uV-sb0"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="counterView" destination="K3Q-6E-ida" id="8C6-e7-AL7"/>
+                                    <outlet property="label" destination="CSv-h4-DzZ" id="HPb-6u-VbJ"/>
                                     <segue destination="DUm-Zp-Rs5" kind="show" identifier="listToListItem" id="JCk-pu-i59"/>
                                 </connections>
                             </tableViewCell>
